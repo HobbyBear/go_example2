@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"github.com/plutov/paypal/v4"
 	"log"
 )
@@ -19,18 +20,22 @@ func main() {
 		log.Fatal(err)
 	}
 
-	plan, _ := c.GetSubscriptionPlan(context.TODO(), "P-61E05087V7286091DMJ53X3I")
-	plan.BillingCycles[0].PricingScheme.FixedPrice.Value = "2.99"
-	err = c.UpdateSubscriptionPlanPricing(context.TODO(), "P-61E05087V7286091DMJ53X3I", []paypal.PricingSchemeUpdate{
-		{
-			BillingCycleSequence: plan.BillingCycles[0].Sequence,
-			PricingScheme:        plan.BillingCycles[0].PricingScheme,
-		},
-	})
+	webhook, err := c.GetWebhook(context.TODO(), "8KJ93346K61163620")
+	fmt.Println(webhook)
+
+	plan, err := c.GetSubscriptionDetails(context.TODO(), "I-XCAPUB5863CR")
+
+	//plan.BillingCycles[0].PricingScheme.FixedPrice.Value = "2500"
+	//err = c.UpdateSubscriptionPlanPricing(context.TODO(), "P-3VE1235668573242PMJ53X3A", []paypal.PricingSchemeUpdate{
+	//	{
+	//		BillingCycleSequence: plan.BillingCycles[0].Sequence,
+	//		PricingScheme:        plan.BillingCycles[0].PricingScheme,
+	//	},
+	//})
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	fmt.Println(plan)
 	//plan.BillingCycles[0].Frequency.IntervalUnit = paypal.IntervalUnitDay
 	//plan.BillingCycles[0].Frequency.IntervalCount = 1
 	//

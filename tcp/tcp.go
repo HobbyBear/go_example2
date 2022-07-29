@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"syscall"
 	"time"
 )
 
@@ -28,16 +29,31 @@ func main() {
 				return
 			}
 			i++
-			time.Sleep(2 * time.Second)
-			err = conn.Close()
-			n, err = conn.Write([]byte("haha"))
+			//err = conn.Close()
+			//n, err = conn.Write([]byte("haha"))
+			//if err != nil {
+			//	fmt.Println("写入", n)
+			//}
+			//time.Sleep(3 * time.Second)
+			tcp := conn.(*net.TCPConn)
+			f, _ := tcp.File()
+
+			n, err = syscall.Write(int(f.Fd()), []byte("haha"))
 			if err != nil {
-				fmt.Println("写入", n)
+				fmt.Println("写入", n, err)
+				return
 			}
 			fmt.Println("成功写入", n)
+			time.Sleep(2 * time.Second)
+			//n, err = syscall.Write(int(f.Fd()), []byte("haha"))
+			//if err != nil {
+			//	fmt.Println("写入2", n, err)
+			//	return
+			//}
 			n, err = conn.Write([]byte("haha"))
 			if err != nil {
-				fmt.Println("写入2", n)
+				fmt.Println("写入", n, err)
+				return
 			}
 			fmt.Println("成功写入2", n)
 		}
