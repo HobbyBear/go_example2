@@ -6,5 +6,7 @@ func Add(a int32, b int32) (int32, bool) {
 }
 
 func main() {
-	Add(3, 4)
+	go func() {
+		Add(3, 4)
+	}()
 }
