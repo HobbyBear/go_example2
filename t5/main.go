@@ -1,12 +1,7 @@
 package main
 
-import (
-	"fmt"
-	"unsafe"
-)
-
 func Add(a int32, b int32) int32 {
-	fmt.Println(unsafe.Sizeof(a))
+	//fmt.Println(unsafe.Sizeof(a))
 	return a + b
 }
 
